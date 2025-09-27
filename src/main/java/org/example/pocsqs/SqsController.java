@@ -1,5 +1,6 @@
 package org.example.pocsqs;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -7,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 public class SqsController {
 
     private final SqsProducer sqsProducer;
+
+    @Value("${aws.sqs.queue-url}")
+    private String queueUrl;
 
 
     public SqsController(SqsProducer sqsProducer) {
@@ -18,7 +22,6 @@ public class SqsController {
     public String sendMessage(
             @RequestParam String message) {
 
-        String queueUrl = "https://sqs.us-east-1.amazonaws.com/yourParicularUrl";
         sqsProducer.sendMessage(queueUrl, message);
         return "Mensagem enviada com sucesso para a fila!";
     }
